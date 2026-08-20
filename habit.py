@@ -6,4 +6,6 @@ class Habit:
     self.frequency = frequency
     self.created_at: datetime = datetime.now()
     self.completed_dates: list[datetime] = []
-    
+
+  def complete(self):
+    self.completed_dates.append(datetime.now())
