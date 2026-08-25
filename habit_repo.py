@@ -1,5 +1,6 @@
 import json
 from habit import Habit
+from datetime import datetime
 
 
 class HabitRepo:
@@ -19,3 +20,26 @@ class HabitRepo:
       }
       
       habit_data_list.append(habit_data)
+
+      with open(self.file, "w") as file:
+        json.dump(habit_data_list, file, indent=2)
+
+  def load_habits(self) -> list[Habit]:
+    try:
+      with open(self.file, "r") as file:
+        habit_data_list = json.load(file)
+    except FileNotFoundError:
+      return []
+
+    habits = []
+    for habit_data in habit_data_list:
+      habit = Habit(
+        name=habit_data["name"],
+        description=habit_data["description"],
+        frequency=habit_data["frequency"]
+      )
+      habit.created_at = datetime.fromisoformat(habit_data["created_at"])
+      habit.completed_dates = [datetime.fromisoformat(date) for date in habit_data["completed_dates"]]
+      habits.append(habit)
+
+    return habits
