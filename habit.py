@@ -8,11 +8,19 @@ class Habit:
     self.completed_dates: list[datetime] = []
 
   def complete(self):
-    today_date = datetime.now().date()
+    today = datetime.now()
     
     for completed_date in self.completed_dates:
-      if(completed_date.date() == today_date):
-        return
+
+        if self.frequency == "daily":
+            if completed_date.date() == today.date():
+                print(f"Habit '{self.name}' has already been completed today.")
+                return
+
+        elif self.frequency == "weekly":
+            if completed_date.isocalendar().year == today.isocalendar().year and completed_date.isocalendar().week == today.isocalendar().week:
+                print(f"Habit '{self.name}' has already been completed this week.")
+                return
       
-    self.completed_dates.append(datetime.now())
+    self.completed_dates.append(today)
   

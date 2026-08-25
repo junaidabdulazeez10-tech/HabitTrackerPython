@@ -1,13 +1,5 @@
 from habit import Habit
+from datetime import datetime
+from habit_repo import HabitRepo
 
-habit = Habit("Exercise", "do sport", "daily")
 
-print("Before:", habit.completed_dates)
-
-habit.complete()
-
-print("After first:", habit.completed_dates)
-
-habit.complete()
-
-print("After second:", habit.completed_dates)
