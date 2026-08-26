@@ -1,13 +1,11 @@
 from habit_repo import HabitRepo
+from habit_tracker import HabitTracker
 
 repo = HabitRepo("habits.json")
+tracker = HabitTracker(repo)
 
-habits = repo.load_habits()
+tracker.load()
 
-for habit in habits:
-    print("Name:", habit.name)
-    print("Description:", habit.description)
-    print("Frequency:", habit.frequency)
-    print("Created:", habit.created_at)
-    print("Completed:", habit.completed_dates)
-    print()
+for habit in tracker.get_habits():
+    print(habit.name, "-", habit.frequency)
+    print("Completions:", len(habit.completed_dates))

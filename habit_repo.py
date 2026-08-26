@@ -21,7 +21,7 @@ class HabitRepo:
       
       habit_data_list.append(habit_data)
 
-      with open(self.file, "w") as file:
+    with open(self.file, "w") as file:
         json.dump(habit_data_list, file, indent=2)
 
   def load_habits(self) -> list[Habit]:
@@ -43,3 +43,5 @@ class HabitRepo:
       habits.append(habit)
 
     return habits
+
+ 

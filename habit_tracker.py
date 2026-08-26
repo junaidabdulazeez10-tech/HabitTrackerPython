@@ -1,7 +1,10 @@
 from habit import Habit
+from habit_repo import HabitRepo
+
 class HabitTracker:
-  def __init__(self):
+  def __init__(self, repo: HabitRepo):
     self.habits: list[Habit] = []  
+    self.repo = repo
 
   def add_habit(self, habit: Habit):
     self.habits.append(habit)
@@ -19,3 +22,9 @@ class HabitTracker:
     habit.name = name
     habit.description = description
     habit.frequency = frequency
+
+  def save(self):
+      self.repo.save_habits(self.habits)
+  
+  def load(self):
+      self.habits = self.repo.load_habits()
