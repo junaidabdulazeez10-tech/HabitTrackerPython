@@ -4,8 +4,36 @@ from analytics import (
     get_all_habits,
     get_habits_by_frequency,
     get_longest_streak_for_habit,
-    get_longest_streak
+    get_longest_streak,
 )
+
+
+def select_habit(habits):
+    for index, habit in enumerate(habits, start=1):
+        print(index, "-", habit.name)
+
+    try:
+        habit_number = int(input("Choose a habit: "))
+
+        if habit_number < 1 or habit_number > len(habits):
+            print("Invalid habit number.")
+            return None
+
+        return habits[habit_number - 1]
+
+    except ValueError:
+        print("Please enter a number.")
+        return None
+
+
+def get_frequency():
+    frequency = input("Enter frequency (daily/weekly): ").strip().lower()
+
+    if frequency not in ["daily", "weekly"]:
+        print("Invalid frequency. Please enter daily or weekly.")
+        return None
+
+    return frequency
 
 
 def run_cli(tracker: HabitTracker):
@@ -23,104 +51,112 @@ def run_cli(tracker: HabitTracker):
         print()
 
         if choice == "1":
-           habits = tracker.get_habits()
+            habits = tracker.get_habits()
 
-           if len(habits) == 0:
-              print("No habits found.")
+            if len(habits) == 0:
+                print("No habits found.")
 
-           else:
-              for habit in habits:
-                print(habit.name, "-", habit.frequency)
+            else:
+                for habit in habits:
+                    print(habit.name, "-", habit.frequency)
 
         elif choice == "2":
-          name = input("Enter habit name: ")
-          description = input("Enter habit description: ")
-          frequency = input("Enter frequency (daily/weekly): ")
+            name = input("Enter habit name: ")
+            description = input("Enter habit description: ")
+            frequency = get_frequency()
 
-          habit = Habit(name, description, frequency)
+            if frequency is None:
+                continue
 
-          tracker.add_habit(habit)
-          tracker.save()
+            habit = Habit(name, description, frequency)
 
-          print(f"Habit '{name}' created successfully.")
+            tracker.add_habit(habit)
+            tracker.save()
+
+            print(f"Habit '{name}' created successfully.")
 
         elif choice == "3":
-          habits = tracker.get_habits()
+            habits = tracker.get_habits()
 
-          if len(habits) == 0:
-            print("No habits found.")
-          else:
-              for index, habit in enumerate(habits, start=1):
-                  print(index, "-", habit.name)
+            if len(habits) == 0:
+                print("No habits found.")
+            else:
+                habit = select_habit(habits)
 
-              habit_number = int(input("Choose a habit to complete: "))
-              habit = habits[habit_number - 1]
+                if habit is None:
+                    continue
 
-              completed = tracker.complete_habit(habit)
-              if completed:
+                completed = tracker.complete_habit(habit)
+                if completed:
                     tracker.save()
                     print(f"Habit '{habit.name}' completed successfully.")
-              else:
-                    print(f"Habit '{habit.name}' has already been completed for this period.")
+                else:
+                    print(
+                        f"Habit '{habit.name}' has already been completed for this period."
+                    )
 
         elif choice == "4":
-          habits = tracker.get_habits()
+            habits = tracker.get_habits()
 
-          if len(habits) == 0:
-              print("No habits found.")
-          else:
-              for index, habit in enumerate(habits, start=1):
-                  print(index, "-", habit.name)
+            if len(habits) == 0:
+                print("No habits found.")
+            else:
+                habit = select_habit(habits)
 
-              habit_number = int(input("Choose a habit to edit: "))
-              habit = habits[habit_number - 1]
+                if habit is None:
+                    continue
 
-              new_name = input("Enter new habit name (leave blank to keep current): ")
-              new_description = input("Enter new habit description (leave blank to keep current): ")
-              new_frequency = input("Enter new frequency (daily/weekly) (leave blank to keep current): ")
+                new_name = input("Enter new habit name (leave blank to keep current): ")
+                new_description = input(
+                    "Enter new habit description (leave blank to keep current): "
+                )
+                new_frequency = (
+                    input(
+                        "Enter new frequency (daily/weekly) "
+                        "(leave blank to keep current): "
+                    )
+                    .strip()
+                    .lower()
+                )
 
-              if not new_name:
-                  new_name = habit.name
+                if new_frequency:
+                    if new_frequency not in ["daily", "weekly"]:
+                        print("Invalid frequency. Please enter daily or weekly.")
+                        continue
+                else:
+                    new_frequency = habit.frequency
 
-              if not new_description:
-                  new_description = habit.description
+                if not new_name:
+                    new_name = habit.name
 
-              if not new_frequency:
-                  new_frequency = habit.frequency
+                if not new_description:
+                    new_description = habit.description
 
-              tracker.edit_habit(
-                  habit,
-                  new_name,
-                  new_description,
-                  new_frequency
-              )
+                tracker.edit_habit(habit, new_name, new_description, new_frequency)
 
-              tracker.save()
+                tracker.save()
 
-              print(f"Habit '{habit.name}' updated successfully.")
+                print(f"Habit '{habit.name}' updated successfully.")
 
         elif choice == "5":
 
-          habits = tracker.get_habits()
+            habits = tracker.get_habits()
 
-          if len(habits) == 0:
-              print("No habits found.")
-          else:
-              for index, habit in enumerate(habits, start=1):
-                  print(index, "-", habit.name)
+            if len(habits) == 0:
+                print("No habits found.")
+            else:
+                habit = select_habit(habits)
 
-              habit_number = int(input("Choose a habit to delete: "))
-              habit = habits[habit_number - 1]
+                if habit is None:
+                    continue
 
-              tracker.delete_habit(habit)
-              tracker.save()
+                tracker.delete_habit(habit)
+                tracker.save()
 
-              print(f"Habit '{habit.name}' deleted successfully.")
+                print(f"Habit '{habit.name}' deleted successfully.")
 
-
-        
         elif choice == "6":
-          
+
             print("=== Analytics ===")
             print("1. View all habits")
             print("2. View habits by frequency")
@@ -141,12 +177,12 @@ def run_cli(tracker: HabitTracker):
                         print(habit.name, "-", habit.frequency)
 
             elif analytics_choice == "2":
-                frequency = input("Enter frequency (daily/weekly): ")
+                frequency = get_frequency()
 
-                habits = get_habits_by_frequency(
-                    tracker.get_habits(),
-                    frequency
-                )
+                if frequency is None:
+                    continue
+
+                habits = get_habits_by_frequency(tracker.get_habits(), frequency)
 
                 if len(habits) == 0:
                     print(f"No {frequency} habits found.")
@@ -160,14 +196,10 @@ def run_cli(tracker: HabitTracker):
                 if len(habits) == 0:
                     print("No habits found.")
                 else:
-                    for index, habit in enumerate(habits, start=1):
-                        print(index, "-", habit.name)
+                    habit = select_habit(habits)
 
-                    habit_number = int(
-                        input("Choose a habit to view longest streak: ")
-                    )
-
-                    habit = habits[habit_number - 1]
+                    if habit is None:
+                        continue
 
                     longest_streak = get_longest_streak_for_habit(habit)
 
@@ -179,9 +211,7 @@ def run_cli(tracker: HabitTracker):
                     )
 
             elif analytics_choice == "4":
-                longest_streak = get_longest_streak(
-                    tracker.get_habits()
-                )
+                longest_streak = get_longest_streak(tracker.get_habits())
 
                 print(f"Longest streak overall: {longest_streak}")
 
@@ -189,8 +219,8 @@ def run_cli(tracker: HabitTracker):
                 continue
 
         elif choice == "7":
-          print("Goodbye!")
-          break
+            print("Goodbye!")
+            break
 
         else:
-          print("Invalid option. Please choose between 1 and 7.")
+            print("Invalid option. Please choose between 1 and 7.")

@@ -6,8 +6,10 @@ from habit import Habit
 def get_all_habits(habits: list[Habit]) -> list[Habit]:
     return habits
 
+
 def get_habits_by_frequency(habits: list[Habit], frequency: str) -> list[Habit]:
     return list(filter(lambda habit: habit.frequency == frequency, habits))
+
 
 def get_longest_streak_for_habit(habit: Habit) -> int:
     sorted_dates = sorted(habit.completed_dates)
@@ -23,26 +25,18 @@ def get_longest_streak_for_habit(habit: Habit) -> int:
         current_date = sorted_dates[i]
 
         if habit.frequency == "daily":
-            is_consecutive = (
-                current_date.date()
-                == previous_date.date() + timedelta(days=1)
+            is_consecutive = current_date.date() == previous_date.date() + timedelta(
+                days=1
             )
 
         elif habit.frequency == "weekly":
-            previous_week = (
-                previous_date.date()
-                - timedelta(days=previous_date.weekday())
+            previous_week = previous_date.date() - timedelta(
+                days=previous_date.weekday()
             )
 
-            current_week = (
-                current_date.date()
-                - timedelta(days=current_date.weekday())
-            )
+            current_week = current_date.date() - timedelta(days=current_date.weekday())
 
-            is_consecutive = (
-                current_week
-                == previous_week + timedelta(days=7)
-            )
+            is_consecutive = current_week == previous_week + timedelta(days=7)
 
         else:
             is_consecutive = False
