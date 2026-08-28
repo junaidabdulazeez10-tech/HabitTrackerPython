@@ -16,7 +16,7 @@ class HabitTracker:
     self.habits.remove(habit)
 
   def complete_habit(self, habit: Habit): 
-    habit.complete()
+    return habit.complete()
 
   def edit_habit(self, habit: Habit, name:str, description:str, frequency:str ):
     habit.name = name
