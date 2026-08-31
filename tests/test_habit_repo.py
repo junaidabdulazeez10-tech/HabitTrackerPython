@@ -4,9 +4,10 @@ import os
 from habit import Habit
 from habit_repo import HabitRepo
 
-
+# Unit tests for the HabitRepo class
 class TestHabitRepo(unittest.TestCase):
 
+    # Test saving and loading habits to/from a JSON file
     def test_save_and_load_habits(self):
 
         repo = HabitRepo("test_habits.json")

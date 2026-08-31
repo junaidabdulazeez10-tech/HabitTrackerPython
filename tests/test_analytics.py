@@ -9,9 +9,10 @@ from analytics import (
     get_all_habits,
 )
 
-
+# Unit tests for the analytics functions
 class TestAnalytics(unittest.TestCase):
 
+    # Test the longest streak calculation for a daily habit
     def test_daily_longest_streak(self):
         habit = Habit("Exercise", "Daily exercise routine", "daily")
         habit.completed_dates = [
@@ -23,6 +24,7 @@ class TestAnalytics(unittest.TestCase):
         ]
         self.assertEqual(get_longest_streak_for_habit(habit), 3)
 
+    # Test the longest streak calculation for a weekly habit
     def test_weekly_longest_streak(self):
         habit = Habit("Read", "Weekly reading habit", "weekly")
         habit.completed_dates = [
@@ -33,6 +35,7 @@ class TestAnalytics(unittest.TestCase):
         ]
         self.assertEqual(get_longest_streak_for_habit(habit), 3)
 
+    # Test the longest streak calculation across multiple habits
     def test_longest_streak_across_all_habits(self):
         habit1 = Habit("Exercise", "Daily exercise routine", "daily")
         habit1.completed_dates = [
@@ -55,6 +58,7 @@ class TestAnalytics(unittest.TestCase):
         habits = [habit1, habit2]
         self.assertEqual(get_longest_streak(habits), 6)
 
+    # Test getting all habits from a list
     def test_get_all_habits(self):
         habit1 = Habit("Exercise", "Exercise daily", "daily")
         habit2 = Habit("Clean", "Clean weekly", "weekly")
@@ -65,6 +69,7 @@ class TestAnalytics(unittest.TestCase):
 
         self.assertEqual(result, habits)
 
+    # Test getting habits by frequency from a list
     def test_get_habits_by_frequency(self):
         habit1 = Habit("Exercise", "Exercise daily", "daily")
         habit2 = Habit("Read", "Read daily", "daily")

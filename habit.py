@@ -1,6 +1,6 @@
 from datetime import datetime
 
-
+# Represents a habit and stores its completion history.
 class Habit:
     def __init__(self, name: str, description: str, frequency: str):
         self.name = name
@@ -9,6 +9,7 @@ class Habit:
         self.created_at: datetime = datetime.now()
         self.completed_dates: list[datetime] = []
 
+    # Completes the habit if it has not already been completed for the current period.
     def complete(self):
         today = datetime.now()
 

@@ -2,11 +2,12 @@ import json
 from habit import Habit
 from datetime import datetime
 
-
+# Handles saving and loading habits from a JSON file.
 class HabitRepo:
     def __init__(self, file: str):
         self.file = file
 
+    # Save habits to JSON and convert datetime values to ISO strings.
     def save_habits(self, habits: list[Habit]):
         habit_data_list = []
 
@@ -24,6 +25,7 @@ class HabitRepo:
         with open(self.file, "w") as file:
             json.dump(habit_data_list, file, indent=2)
 
+    # Load habits from JSON and convert ISO strings back to datetime values.
     def load_habits(self) -> list[Habit]:
         try:
             with open(self.file, "r") as file:

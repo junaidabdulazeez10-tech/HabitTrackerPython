@@ -4,9 +4,10 @@ from habit import Habit
 from habit_repo import HabitRepo
 from habit_tracker import HabitTracker
 
-
+# Unit tests for the HabitTracker class
 class TestHabitTracker(unittest.TestCase):
 
+    # Test adding a habit to the tracker
     def test_add_habit(self):
         repo = HabitRepo("test_habits.json")
         tracker = HabitTracker(repo)
@@ -14,6 +15,7 @@ class TestHabitTracker(unittest.TestCase):
         tracker.add_habit(habit)
         self.assertEqual(len(tracker.get_habits()), 1)
 
+    # Test deleting a habit from the tracker
     def test_delete_habit(self):
         repo = HabitRepo("test_habits.json")
         tracker = HabitTracker(repo)
@@ -22,6 +24,7 @@ class TestHabitTracker(unittest.TestCase):
         tracker.delete_habit(habit)
         self.assertEqual(len(tracker.get_habits()), 0)
 
+    # Test editing a habit in the tracker
     def test_edit_habit(self):
         repo = HabitRepo("test_habits.json")
         tracker = HabitTracker(repo)
@@ -32,6 +35,7 @@ class TestHabitTracker(unittest.TestCase):
         self.assertEqual(habit.description, "chill out")
         self.assertEqual(habit.frequency, "weekly")
 
+    # Test completing a habit in the tracker
     def test_complete_habit(self):
         repo = HabitRepo("test_habits.json")
         tracker = HabitTracker(repo)

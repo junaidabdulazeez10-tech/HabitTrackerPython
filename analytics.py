@@ -2,15 +2,15 @@ from datetime import timedelta
 
 from habit import Habit
 
-
+# Return all habits.
 def get_all_habits(habits: list[Habit]) -> list[Habit]:
     return habits
 
-
+# get_habits_by_frequency function filters the list of habits based on the specified frequency (daily or weekly) and returns the filtered list.
 def get_habits_by_frequency(habits: list[Habit], frequency: str) -> list[Habit]:
     return list(filter(lambda habit: habit.frequency == frequency, habits))
 
-
+# Calculate the longest consecutive streak for a single habit.
 def get_longest_streak_for_habit(habit: Habit) -> int:
     sorted_dates = sorted(habit.completed_dates)
 
@@ -50,7 +50,7 @@ def get_longest_streak_for_habit(habit: Habit) -> int:
 
     return longest_streak
 
-
+# Calculate the longest streak across all habits.
 def get_longest_streak(habits: list[Habit]) -> int:
     longest_streak = 0
 

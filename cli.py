@@ -7,7 +7,7 @@ from analytics import (
     get_longest_streak,
 )
 
-
+# Display the habits and let the user select one.
 def select_habit(habits):
     for index, habit in enumerate(habits, start=1):
         print(index, "-", habit.name)
@@ -25,7 +25,7 @@ def select_habit(habits):
         print("Please enter a number.")
         return None
 
-
+# Ask the user for a valid daily or weekly frequency.
 def get_frequency():
     frequency = input("Enter frequency (daily/weekly): ").strip().lower()
 
@@ -35,7 +35,7 @@ def get_frequency():
 
     return frequency
 
-
+# Run the main command-line menu.
 def run_cli(tracker: HabitTracker):
     while True:
         print("\n=== Habit Tracker ===")
